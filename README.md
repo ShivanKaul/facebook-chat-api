@@ -44,8 +44,8 @@ login({email: "FB_EMAIL", password: "FB_PASSWORD"}, function callback (err, api)
 * [`api.getOnlineUsers`](#getOnlineUsers)
 * [`api.logout`](#logout)
 * [`api.deleteMessage`](#deleteMessage)
-* [`api.archiveThread`](#archiveThread)
-* [`api.unarchiveThread`](#unarchiveThread)
+<!-- * [`api.archiveThread`](#archiveThread)
+* [`api.unarchiveThread`](#unarchiveThread) -->
 * [`api.searchForThread`](#searchForThread)
 
 ---------------------------------------
@@ -529,13 +529,35 @@ api.listen(function callback(err, message) {
 
 ---------------------------------------
 
-<a name="archiveThread" />
-### api.archiveThread(threadOrThreads, callback)
+<a name="searchForThread" />
+### api.searchForThread(name, callback)
 
-Takes a threadID or an array of threadIDs and archives the corresponding conversation thread.
+Takes a chat title (thread name) and returns matching results as a formatted threads array (ordered according to Facebook).
 
 __Arguments__
-* `threadOrThreads`: A threadID string or threadID string array
+* `name`: A messageID string or messageID string array
+* `callback(err)`: A callback called when the query is done (either with an error or null).
+
+__Example__
+```js
+api.listen(function callback(err, message) {
+  if(message.body) {
+    api.sendMessage(message.body, message.threadID, function(error, messageInfo) {
+      api.deleteMessage(messageInfo.messageID);
+    });
+  }
+});
+```
+
+---------------------------------------
+
+<a name="changeArchivedStatus" />
+### api.changeArchivedStatus(threadI, callback)
+
+Takes a chat title (thread name) and returns matching results as a formatted threads array (ordered according to Facebook).
+
+__Arguments__
+* `name`: A messageID string or messageID string array
 * `callback(err)`: A callback called when the query is done (either with an error or null).
 
 __Example__
