@@ -277,7 +277,7 @@ __Arguments__
 
 * `message`: A string (for backward compatibility) or a message object as described below.
 * `threadID`: A string, number, or array representing a thread. It happens to be someone's userId in the case of a one to one conversation or an array of userIds when starting a new group chat.
-* `callback(err, threadID)`: A callback called when sending the message is done (either with an error or with an confirmation object). `threadID` contains only the thread_id where the message was sent.
+* `callback(err, messageInfo)`: A callback called when sending the message is done (either with an error or with an confirmation object). `messageInfo` contains the `threadID` where the message was sent and a `messageID`.
 
 __Message Object__: 
 
@@ -442,9 +442,9 @@ Adds a user (or array of users) to a group chat.
 
 __Arguments__
 
-* `userID` - User ID or array of user IDs.
-* `threadID` - Group chat ID.
-* `callback(err)` - A callback called when the query is done (either with an error or with no arguments).
+* `userID`: User ID or array of user IDs.
+* `threadID`: Group chat ID.
+* `callback(err)`: A callback called when the query is done (either with an error or with no arguments).
 
 ---------------------------------------
 
@@ -455,9 +455,9 @@ Removes a user from a group chat.
 
 __Arguments__
 
-* `userID` - User ID.
-* `threadID` - Group chat ID.
-* `callback(err)` - A callback called when the query is done (either with an error or with no arguments).
+* `userID`: User ID.
+* `threadID`: Group chat ID.
+* `callback(err)`: A callback called when the query is done (either with an error or with no arguments).
 
 ---------------------------------------
 
@@ -468,8 +468,8 @@ Sends a "USERNAME is typing" indicator to other members of the thread indicated 
 
 __Arguments__
 
-* `thread_id` - Group chat ID.
-* `callback(err, end)` - A callback called when the query is done (either with an error or with null followed by a function `end` described above).
+* `thread_id`: Group chat ID.
+* `callback(err, end)`: A callback called when the query is done (either with an error or with null followed by a function `end` described above).
 
 ---------------------------------------
 
@@ -480,7 +480,7 @@ Obtains users currently online and calls the callback with a list of the online 
 
 __Arguments__
 
-* `callback(err, arr)` - A callback called when the query is done (either with an error or with null followed by an array `arr`). `arr`
+* `callback(err, arr)`: A callback called when the query is done (either with an error or with null followed by an array `arr`). `arr`
 is an array of objects with the following keys: `timestamp`, `userID` and `statuses`. `statuses` looks like:
 ```js
 {
@@ -503,7 +503,7 @@ Logs out the current user.
 
 __Arguments__
 
-* `callback(err)` - A callback called when the query is done (either with an error or with null).
+* `callback(err)`: A callback called when the query is done (either with an error or with null).
 
 ---------------------------------------
 
@@ -513,4 +513,38 @@ __Arguments__
 Takes a messageID or an array of messageIDs and deletes the corresponding message.
 
 __Arguments__
-* 
+* `messageOrMessages`: A messageID string or messageID string array
+* `callback(err)`: A callback called when the query is done (either with an error or null).
+
+__Example__
+```js
+api.listen(function callback(err, message) {
+  if(message.body) {
+    api.sendMessage(message.body, message.threadID, function(error, messageInfo) {
+      api.deleteMessage(messageInfo.messageID);
+    });
+  }
+});
+```
+
+---------------------------------------
+
+<a name="archiveThread" />
+### api.archiveThread(threadOrThreads, callback)
+
+Takes a threadID or an array of threadIDs and archives the corresponding conversation thread.
+
+__Arguments__
+* `threadOrThreads`: A threadID string or threadID string array
+* `callback(err)`: A callback called when the query is done (either with an error or null).
+
+__Example__
+```js
+api.listen(function callback(err, message) {
+  if(message.body) {
+    api.sendMessage(message.body, message.threadID, function(error, messageInfo) {
+      api.deleteMessage(messageInfo.messageID);
+    });
+  }
+});
+```
