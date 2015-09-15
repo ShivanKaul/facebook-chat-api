@@ -18,7 +18,7 @@ login({email: "FB_EMAIL", password: "FB_PASSWORD"}, function callback (err, api)
     if(err) return console.error(err);
 
     api.listen(function callback(err, message) {
-        api.sendMessage(message.body, message.thread_id);
+        api.sendMessage(message.body, message.threadID);
     });
 });
 
@@ -26,6 +26,7 @@ login({email: "FB_EMAIL", password: "FB_PASSWORD"}, function callback (err, api)
 ```
 
 ## Documentation
+
 * [`login`](#login)
 * [`api.listen`](#listen)
 * [`api.setOptions`](#setOptions)
@@ -41,25 +42,30 @@ login({email: "FB_EMAIL", password: "FB_PASSWORD"}, function callback (err, api)
 * [`api.removeUserFromGroup`](#removeUserFromGroup)
 * [`api.sendTypingIndicator`](#sendTypingIndicator)
 * [`api.getOnlineUsers`](#getOnlineUsers)
+* [`api.logout`](#logout)
+* [`api.deleteMessage`](#deleteMessage)
+* [`api.archiveThread`](#archiveThread)
+* [`api.unarchiveThread`](#unarchiveThread)
+* [`api.searchForThread`](#searchForThread)
 
 ---------------------------------------
 
-<a name="login" />
+<a name="login"/>
 ### login(emailAndPassword, [options], callback)
 
-This function is returned by require(...) and is the main entry point to the API.
+This function is returned by `require(...)` and is the main entry point to the API.
 
-Logs into facebook given the right credentials.
+It allows the user to log into facebook given the right credentials.
 
-If it succeeds, callback will be called with a null object (for potential errors) and with an object containing all the available functions.
+If it succeeds, `callback` will be called with a `null` object (for potential errors) and with an object containing all the available functions.
 
-If it fails, callback will be called with an error object.
+If it fails, `callback` will be called with an error object.
 
 __Arguments__
 
-* `emailAndPassword` - An object containing the fields `email` and `password` used to login.
-* `options` - An object representing options to use when logging in (as described in [api.setOptions](#setOptions)).
-* `callback(err, api)` - A callback called when login is done (successful or not). `err` is an object containing a field `error`.
+* `emailAndPassword`: An object containing the fields `email` and `password` used to login.
+* `options`: An object representing options to use when logging in (as described in [api.setOptions](#setOptions)).
+* `callback(err, api)`: A callback called when login is done (successful or not). `err` is an object containing a field `error`.
 
 __Example__
 
@@ -108,33 +114,33 @@ __Review Recent Login__: Sometimes Facebook will ask you to review your recent l
 <a name="listen" />
 ### api.listen(callback)
 
-Will call callback when a new message it received on this account.
+Will call `callback` when a new message is received on this account.
 By default this won't receive events (joining/leaving a chat, title change etc...) but it can be activated with `api.setOptions({listenEvents: true})`.
 
 __Arguments__
 
-- `callback(error, message, stopListening)` - A callback called every time the logged-in account receives a new message. `stopListening` is a function that will stop the `listen` loop and is guaranteed to prevent any future calls to the callback given to `listen`. An immediate call to `stopListening` when an error occurs will prevent the listen function to continue.
+- `callback(error, message, stopListening)`: A callback called every time the logged-in account receives a new message. `stopListening` is a function that will stop the `listen` loop and is guaranteed to prevent any future calls to the callback given to `listen`. An immediate call to `stopListening` when an error occurs will prevent the listen function to continue.
 
 __Message__
 
 If `type` is `message`, the object will contain the following fields:
 
-  + `sender_name` - First and last name of the person who just sent the message.
-  + `sender_id` - The id of the person who sent the message in the chat with thread_id.
-  + `participant_ids` - An array containing the ids of everyone in the thread (sender included).
-  + `participant_names` - An array containing only the first names of the other participants in the thread (sender included).
-  + `body` - The string corresponding to the message that was just received.
-  + `thread_id` - The thread_id representing the thread in which the message was sent.
-  + `coordinates` - An object containing `latitude`, `longitude`, and `accuracy`.
-  + `type` - The string `"message"`, `"sticker"`, `"file"`, `"photo"`, `"animated_image"`, or `"event"` (if applicable, see below).
+  + `sender_name`: First and last name of the person who just sent the message.
+  + `sender_id`: The id of the person who sent the message in the chat with thread_id.
+  + `participant_ids`: An array containing the ids of everyone in the thread (sender included).
+  + `participant_names`: An array containing only the first names of the other participants in the thread (sender included).
+  + `body`: The string corresponding to the message that was just received.
+  + `thread_id`: The thread_id representing the thread in which the message was sent.
+  + `coordinates`: An object containing `latitude`, `longitude`, and `accuracy`.
+  + `type`: The string `"message"`, `"sticker"`, `"file"`, `"photo"`, `"animated_image"`, or `"event"` (if applicable, see below).
 
 If `type` is `"sticker"` there will be a `sticker_id` and `sticker_url` field instead of `body`.
 
-If `type` is `file` there will be a `name` and a `file_url` instead of `body`.
+If `type` is `"file"` there will be a `name` and a `file_url` instead of `body`.
 
-If `type` is `photo` there will be `name`,`hires_url`, `thumbnail_url`, and `preview_url` instead of `body`.
+If `type` is `"photo"` there will be `name`,`hires_url`, `thumbnail_url`, and `preview_url` instead of `body`.
 
-If `type` is `animated_image` there will be `name`, `url`, and `preview_url`  instead of `body`.
+If `type` is `"animated_image"` there will be `name`, `url`, and `preview_url`  instead of `body`.
 
 If enabled through [setOptions](#setOptions), this will also handle events. In this case, `message` will be either a message (see above) or an event object with the following fields
 - `type` - The string `"event"`
@@ -193,16 +199,16 @@ __Arguments__
 
 * `options` - An object containing the new values for the options that you want
   to set.  If the value for an option is unspecified, it is unchanged. The following options are possible.
-    - `logLevel` - The desired logging level as determined by npmlog.  Choose
+    - `logLevel`: The desired logging level as determined by npmlog.  Choose
       from either `"silly"`, `"verbose"`, `"info"`, `"http"`, `"warn"`, `"error"`, or `"silent"`.
-    - `selfListen` - (Default `false`) Set this to `true` if you want your api
+    - `selfListen`: (Default `false`) Set this to `true` if you want your api
       to receive messages from its own account.  This is to be used with
       caution, as it can result in loops (a simple echo bot will send messages
       forever).
-    - `listenEvents` - (Default `false`) Will make [api.listen](#listen) also handle events (look at api.listen for more details).
-    - `pageId` - (Default empty) Makes [api.listen](#listen) only receive messages through the page specified by that ID. Also makes sendMessage and sendSticker send from the page.
-    - `updatePresence` - (Default `false`) Will make [api.listen](#listen) also return `presence` (look at api.listen for more details).
-    - `forceLogin` - (Default `false`) Will automatically approve of any recent logins and continue with the login process.
+    - `listenEvents`: (Default `false`) Will make [api.listen](#listen) also handle events (look at api.listen for more details).
+    - `pageId`: (Default empty) Makes [api.listen](#listen) only receive messages through the page specified by that ID. Also makes `sendMessage` and `sendSticker` send from the page.
+    - `updatePresence`: (Default `false`) Will make [api.listen](#listen) also return `presence` ([api.listen](#listen) for more details).
+    - `forceLogin`: (Default `false`) Will automatically approve of any recent logins and continue with the login process.
 
 __Example__
 
@@ -230,7 +236,7 @@ login({email: "FB_EMAIL", password: "FB_PASSWORD"}, function callback (err, api)
 <a name="getUserID" />
 ### api.getUserID(name, callback)
 
-Given a person's full name will do a Facebook Graph search and return all the ids ordered by however Facebook wants to order them.
+Given the full name of a Facebook user, the call will perform a Facebook Graph search and return all corresponding IDs (order determined by Facebook).
 
 __Arguments__
 
@@ -263,20 +269,25 @@ Returns the currently logged-in user's Facebook user ID.
 ---------------------------------------
 
 <a name="sendMessage" />
-### api.sendMessage(message, thread_id, [callback])
+### api.sendMessage(message, threadID, [callback])
 
 Sends the given message to the thread_id.
 
 __Arguments__
 
-* `message` - A string (for backward compatibility) or a message object as described below.
-* `thread_id` - A string, number, or array representing a thread. It happens to be someone's userId in the case of a one to one conversation or an array of userIds when starting a new group chat.
-* `callback(err, threadID)` - A callback called when sending the message is done (either with an error or with an confirmation object). `threadID` contains only the thread_id where the message was sent.
+* `message`: A string (for backward compatibility) or a message object as described below.
+* `threadID`: A string, number, or array representing a thread. It happens to be someone's userId in the case of a one to one conversation or an array of userIds when starting a new group chat.
+* `callback(err, threadID)`: A callback called when sending the message is done (either with an error or with an confirmation object). `threadID` contains only the thread_id where the message was sent.
 
-*Message Object*: Various types of message can be sent:
-* Regular - Set a field `body` to the desired message.
-* Sticker - Set a field `sticker` to the desired sticker ID.
-* File/Image - Set field `attachment` to a readable stream or an array of readable streams.
+__Message Object__: 
+
+Various types of message can be sent:
+* *Regular:* set field `body` to the desired message as a string.
+* *Sticker:* set a field `sticker` to the desired sticker ID.
+* *File or image:* Set field `attachment` to a readable stream or an array of readable streams.
+* *URL:* set a field `url` to the desired URL.
+
+Note that a message can only be a regular message (which can be empty) and optionally one of the following: a sticker, an attachment or a url.
 
 __Tip__: to find your own ID, go to your own profile on Facebook and replace 'www' by 'graph' in the URL.
 
@@ -309,13 +320,13 @@ login({email: "FB_EMAIL", password: "FB_PASSWORD"}, function callback (err, api)
 ---------------------------------------
 
 <a name="markAsRead" />
-### api.markAsRead(thread\_id, callback)
+### api.markAsRead(threadID, callback)
 
 Given a thread_id will mark all the unread messages as read. Facebook will take a couple of seconds to show that you've read the messages.
 
 __Arguments__
 
-* `thread_id` - The id of the thread in which you want to mark the messages as read.
+* `threadID` - The id of the thread in which you want to mark the messages as read.
 * `callback(err)` - A callback called when the operation is done maybe with an object representing an error.
 
 __Example__
@@ -336,17 +347,16 @@ login({email: "FB_EMAIL", password: "FB_PASSWORD"}, function callback (err, api)
 ---------------------------------------
 
 <a name="setTitle" />
-### api.setTitle(newTitle, thread_id, [callback])
+### api.setTitle(newTitle, threadID, [callback])
 
-Sets the title of the group chat with thread id thread_id to newTitle.
+Sets the title of the group chat with thread id `threadID` to `newTitle`.
 
-Note: This will not work if the thread id corresponds to a single-user chat or
-if the bot is not in the group chat.
+Note: This will not work if the thread id corresponds to a single-user chat or if the bot is not in the group chat.
 
 __Arguments__
 
-* `newTitle` - A string representing the new title.
-* `thread_id` - A string or number representing a thread. It happens to be someone's userId in the case of a one to one conversation.
+* `newTitle`: A string representing the new title.
+* `threadID`: A string or number representing a thread. It happens to be someone's userId in the case of a one to one conversation.
 * `callback(err, obj)` - A callback called when sending the message is done (either with an error or with an confirmation object). `obj` contains only the thread_id where the message was sent.
 
 ---------------------------------------
@@ -384,11 +394,12 @@ login({email: "FB_EMAIL", password: "FB_PASSWORD"}, function callback (err, api)
 <a name="getFriendsList" />
 ### api.getFriendsList(id, callback)
 
-__Warning__: this function takes a longer time than others to answer because it pulls the friends in batches of 20 (blindly following how the UI pulls the friends list). It might take a couple seconds if you have >1000 friends.
+Given the someone's user id, the function will return an array of ids of the user's friends.
 
-__Warning 2__: this will only work if you're friends with the person or if the person didn't set their friends list as being private information.
+__Warnings__: 
 
-Given the id of a person, will return an array of ids of all its friends.
+1. This function takes a longer time than others to answer because it pulls friends in batches of 20 (blindly following how the UI pulls the friends list). It might take a couple of seconds if you have over 1000 friends.
+2. This will only work if you're friends with the person or if the person didn't set their friend list as being private information.
 
 __Arguments__
 
@@ -418,34 +429,34 @@ Will return information about threads.
 
 __Arguments__
 
-* `start` - Start index in the list of recently used threads.
-* `end` - End index.
-* `callback(err, arr)` - A callback called when the query is done (either with an error or with an confirmation object). `arr` is an array of thread object containing the following properties: thread_id, thread_fbid, other_user_fbid, last_action_id, participants, former_participants, name, snippet, snippet_has_attachment, is_forwarded_snippet, snippet_attachments, snippet_sender, unread_count, message_count, image_src, timestamp_absolute, timestamp_datetime, timestamp_relative, timestamp_time_passed, timestamp, server_timestamp, mute_settings, is_canonical_user, is_canonical, canonical_fbid, is_subscribed, root_message_threading_id, folder, is_archived, mode, recipients_loadable, name_conversation_sheet_dismissed, has_email_participant, read_only.
+* `start`: Start index in the list of recently used threads.
+* `end`: End index.
+* `callback(err, arr)`: A callback called when the query is done (either with an error or with an confirmation object). `arr` is an array of thread object containing the following properties: `threadID, participants, formerParticipants, name, snippet, snippetHasAttachment, snippetAttachments, snippetSender, unreadCount, messageCount, imageSrc, timestamp, serverTimestamp, muteSettings, isCanonicalUser, isCanonical, canonicalFbid, isSubscribed, rootMessageThreadingID, folder, isArchived, recipientsLoadable, hasEmailParticipant, readOnly, canReply, composerEnabled, blockedParticipants, lastMessageID`.
 
 ---------------------------------------
 
 <a name="addUserToGroup" />
-### api.addUserToGroup(user\_id, thread\_id, [callback])
+### api.addUserToGroup(userID, threadID, [callback])
 
 Adds a user (or array of users) to a group chat.
 
 __Arguments__
 
-* `user_id` - User ID or array of user IDs.
-* `thread_id` - Group chat ID.
+* `userID` - User ID or array of user IDs.
+* `threadID` - Group chat ID.
 * `callback(err)` - A callback called when the query is done (either with an error or with no arguments).
 
 ---------------------------------------
 
 <a name="removeUserFromGroup" />
-### api.removeUserFromGroup(user\_id, thread\_id, [callback])
+### api.removeUserFromGroup(userID, threadID, [callback])
 
 Removes a user from a group chat.
 
 __Arguments__
 
-* `user_id` - User ID.
-* `thread_id` - Group chat ID.
+* `userID` - User ID.
+* `threadID` - Group chat ID.
 * `callback(err)` - A callback called when the query is done (either with an error or with no arguments).
 
 ---------------------------------------
@@ -465,7 +476,7 @@ __Arguments__
 <a name="getOnlineUsers" />
 ### api.getOnlineUsers([callback])
 
-Will call the callback with a list of the online users.
+Obtains users currently online and calls the callback with a list of the online users.
 
 __Arguments__
 
@@ -482,3 +493,24 @@ is an array of objects with the following keys: `timestamp`, `userID` and `statu
 ```
 
 Look at [listen](#listen) for details on how to get updated presence.
+
+---------------------------------------
+
+<a name="logout" />
+### api.logout([callback])
+
+Logs out the current user.
+
+__Arguments__
+
+* `callback(err)` - A callback called when the query is done (either with an error or with null).
+
+---------------------------------------
+
+<a name="deleteMessage" />
+### api.deleteMessage(messageOrMessages, callback)
+
+Takes a messageID or an array of messageIDs and deletes the corresponding message.
+
+__Arguments__
+* 
