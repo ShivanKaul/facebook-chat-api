@@ -131,106 +131,34 @@ If `type` is `message`, the object will contain the following fields:
   + `body`: The string corresponding to the message that was just received.
   + `threadID`: The thread_id representing the thread in which the message was sent.
   + `threadName`: The name of the receiver in a single person chat or the name of the group chat.
-  + `location`: 
+  + `location`
   + `messageID`: A string representing the message ID.
   + `attachments`: An array of attachments to the message.
   
-If `attachments` contains an object with type is `"sticker"`, the same object will contain the following fields:
+If `attachments` contains an object with type is `"sticker"`, the same object will contain the following fields: `url`, `stickerID`, `packID`, `frameCount`, `frameRate`, `framesPerRow`, `framesPerCol`, `spriteURI`, `spriteURI2x`, `height`, `width`, `caption`, `description`.
 
-  + `url`: Image url for the sticker.
-  + `stickerID`: An ID attributed to the sticker.
-  + `packID`: An ID attributed to the group to which the sticker belongs.
-  + `frameCount`:
-  + `frameRate`:
-  + `framesPerRow`:
-  + `framesPerCol`:
-  + `spriteURI`:
-  + `spriteURI2x`:
-  + `height`: Height of the sticker in pixels as a number.
-  + `width`: Width of the sticker in pixels as a number.
-  + `caption`: String representing caption associated with the sticker; if there is no caption, it will be an empty string.
-  + `description`: 
-
-If `attachments` contains an object with type is `"file"`, the same object will contain the following fields:
-
-  + `name`: A string representing the attachment name.
-  + `url`: Attachment url.
-  + `ID`: String representing the attachment ID.
-  + `fileSize`: Size of attachment.
-  + `isMalicious`: Boolean specifying if the file is malicious or not.
-  + `mimeType`: 
+If `attachments` contains an object with type is `"file"`, the same object will contain the following fields: `name`, `url`, `ID`, `fileSize`, `isMalicious`, `mimeType`.
 
 If `attachments` contains an object with type is `"photo"`, the same object will contain the following fields:
+`name`, `hiresUrl`, `thumbnailUrl`, `previewUrl`, `previewWidth`, `previewHeight`, `facebookUrl`, `ID`, `filename`, `mimeType`, `url`, `width`, `height`.
 
-  + `name`: A string name associated with the photo.
-  + `hiresUrl`: Attachment url.
-  + `thumbnailUrl`:
-  + `previewUrl`:
-  + `previewWidth`:
-  + `previewHeight`:
-  + `facebookUrl`:
-  + `ID`:
-  + `filename`:
-  + `mimeType`:
-  + `url`:
-  + `width`:
-  + `height`:
+If `attachments` contains an object with type is `"animated_image"`, the same object will contain the following fields: `name`, `facebookUrl`, `previewUrl`, `previewWidth`, `previewHeight`, `thumbnailUrl`, `ID`, `filename`, `mimeType`, `width`, `height`, `url`, `rawGifImage`, `rawWebpImage`, `animatedGifUrl`, `animatedGifPreviewUrl`, `animatedWebpUrl`, `animatedWebpPreviewUrl`
 
-If `attachments` contains an object with type is `"animated_image"`, the same object will contain the following fields:  
+If `attachments` contains an object with type is `"share"`, the same object will contain the following fields: `description`, `ID`, `subattachments`, `animatedImageSize`, `width`, `height`, `image`, `playable`, `duration`, `source`, `title`, `facebookUrl`, `url`.
 
-  + `name`:
-  + `facebookUrl`:
-  + `previewUrl`:
-  + `previewWidth`:
-  + `previewHeight`:
-  + `thumbnailUrl`:
-  + `ID`:
-  + `filename`:
-  + `mimeType`:
-  + `width`:
-  + `height`:
-  + `url`:
-  + `rawGifImage`:
-  + `rawWebpImage`:
-  + `animatedGifUrl`:
-  + `animatedGifPreviewUrl`:
-  + `animatedWebpUrl`:
-  + `animatedWebpPreviewUrl`:
+If enabled through [setOptions](#setOptions), this will also handle events. In this case, `message` will be either a message (see above) or an event object with the following fields:
+- `type`: The string `"event"`
+- `threadID`: The threadID representing the thread in which the message was sent.
+- `logMessageType`: String representing the type of event (`"log:thread-name"`, `"log:unsubscribe"`, `"log:subscribe"`, ...)
+- `logMessageData`: Data relevant to the event.
+- `logMessageBody`: String printed in the chat.
+- `author`: The person who performed the event.
 
-If `attachments` contains an object with type is `"share"`, the same object will contain the following fields:  
-
-  + `description`:
-  + `ID`:
-  + `subattachments`:
-  + `animatedImageSize`:
-  + `width`:
-  + `height`:
-  + `image`:
-  + `playable`:
-  + `duration`:
-  + `source`:
-  + `title`:
-  + `facebookUrl`:
-  + `url`:
-
-If `type` is `"file"` there will be a `name` and a `file` instead of `body`.
-
-If `type` is `"photo"` there will be `name`,`hires_url`, `thumbnail_url`, and `preview_url` instead of `body`.
-
-If `type` is `"animated_image"` there will be `name`, `url`, and `preview_url`  instead of `body`.
-
-If enabled through [setOptions](#setOptions), this will also handle events. In this case, `message` will be either a message (see above) or an event object with the following fields
-- `type` - The string `"event"`
-- `thread_id` - The thread_id representing the thread in which the message was sent.
-- `log_message_type` - String representing the type of event (`"log:thread-name"`, `"log:unsubscribe"`, `"log:subscribe"`, ...)
-- `log_message_data` - Data relevant to the event.
-- `log_message_body` - String printed in the chat.
-- `author` - The person who performed the event.
-
-If enabled through [setOptions](#setOptions), this will also return presence, (`type` will be `"presence"`), which is the online status of the user's friends. The object given to the callback will have the following fields
-- `timestamp` - how old the information is
-- `userId` - the id of the user whose status this packet is describing
-- `statuses` - An object will the following fields: `fbAppStatus`, `messengerStatus`, `otherStatus`, `status` and `webStatus`. All those can contain either of the following values: `"active"`, `"idle"`, `"offline"`.
+If enabled through [setOptions](#setOptions), this will also return presence, (`type` will be `"presence"`), which is the online status of the user's friends. The object given to the callback will have the following fields:
+- `type`: The string "presence".
+- `timestamp`: How old the information is.
+- `userID`: The ID of the user whose status this packet is describing
+- `statuses`: An object will the following fields: `fbAppStatus`, `messengerStatus`, `otherStatus`, `status` and `webStatus`. All those can contain either of the following values: `"active"`, `"idle"`, `"offline"`.
 
 __Example__
 
