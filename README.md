@@ -105,7 +105,7 @@ login(obj, function(err, api) {
 }
 ```
 
-__Review Recent Login__: Sometimes Facebook will ask you to review your recent logins. This means you've recently logged in from a unrecognized location. This will will result in the callback being called with an error `'review-recent-login'` by default. If you wish to automatically approve all recent logins, you can set the option `forceLogin` to `true` in the `loginOptions`.
+__Review Recent Login__: Sometimes Facebook will ask you to review your recent logins. This means you've recently logged in from a unrecognized location. This will result in the callback being called with an error `'review-recent-login'` by default. If you wish to automatically approve all recent logins, you can set the option `forceLogin` to `true` in the `loginOptions`.
 
 
 ---------------------------------------
@@ -280,8 +280,8 @@ Sends the given message to the thread_id.
 
 __Arguments__
 
-* `message`: A string (for backward compatibility) or a message object as described below.
-* `threadID`: A string, number, or array representing a thread. It happens to be someone's userId in the case of a one to one conversation or an array of userIds when starting a new group chat.
+* `message`: A string or a message object as described below.
+* `threadID`: A string, or array representing a thread. It happens to be someone's userId in the case of a one to one conversation or an array of userIds when starting a new group chat.
 * `callback(err, messageInfo)`: A callback called when sending the message is done (either with an error or with an confirmation object). `messageInfo` contains the `threadID` where the message was sent and a `messageID`.
 
 __Message Object__: 
@@ -294,7 +294,7 @@ Various types of message can be sent:
 
 Note that a message can only be a regular message (which can be empty) and optionally one of the following: a sticker, an attachment or a url.
 
-__Tip__: to find your own ID, go to your own profile on Facebook and replace 'www' by 'graph' in the URL.
+__Tip__: to find your own ID, open Facebook, open the inspector, look at the cookies and look for `c_user`.
 
 __Example (Basic Message)__
 ```js
@@ -374,7 +374,7 @@ Will get some information about the given users.
 __Arguments__
 
 * `ids` - Either a string/number for one ID or an array of strings/numbers for a batched query.
-* `callback(err, obj)` - A callback called when the query is done (either with an error or with an confirmation object). `obj` is a mapping from userId to another object containing the following properties: id, name, firstName, vanity, thumbSrc, uri, gender, type, is_friend, is_birthday, searchTokens, alternateName.
+* `callback(err, obj)` - A callback called when the query is done (either with an error or with an confirmation object). `obj` is a mapping from userId to another object containing the following properties: `id`, `name`, `firstName`, `vanity`, `thumbSrc`, `uri`, `gender`, `type`, `is_friend`, `is_birthday`, `searchTokens`, `alternateName`.
 
 __Example__
 
@@ -469,7 +469,7 @@ __Arguments__
 <a name="sendTypingIndicator" />
 ### api.sendTypingIndicator(thread\_id, [callback])
 
-Sends a "USERNAME is typing" indicator to other members of the thread indicated by thread\_id.  This indication will disappear after 30 second or when the `end` function is called.
+Sends a typing indicator to other members of the thread indicated by thread\_id.  This indication will disappear after 30 second or when the `end` function is called.
 
 __Arguments__
 
