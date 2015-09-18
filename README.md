@@ -44,8 +44,7 @@ login({email: "FB_EMAIL", password: "FB_PASSWORD"}, function callback (err, api)
 * [`api.getOnlineUsers`](#getOnlineUsers)
 * [`api.logout`](#logout)
 * [`api.deleteMessage`](#deleteMessage)
-<!-- * [`api.archiveThread`](#archiveThread)
-* [`api.unarchiveThread`](#unarchiveThread) -->
+* [`api.changeArchivedStatus`](#changeArchivedStatus)
 * [`api.searchForThread`](#searchForThread)
 
 ---------------------------------------
@@ -125,16 +124,34 @@ __Message__
 
 If `type` is `message`, the object will contain the following fields:
 
-  + `sender_name`: First and last name of the person who just sent the message.
-  + `sender_id`: The id of the person who sent the message in the chat with thread_id.
-  + `participant_ids`: An array containing the ids of everyone in the thread (sender included).
-  + `participant_names`: An array containing only the first names of the other participants in the thread (sender included).
+  + `senderName`: First and last name of the person who just sent the message.
+  + `senderID`: The id of the person who sent the message in the chat with thread_id.
+  + `participantNames`: An array containing only the first names of the other participants in the thread (sender included).
+  + `participantIDs`: An array containing the ids of everyone in the thread (sender included).
   + `body`: The string corresponding to the message that was just received.
-  + `thread_id`: The thread_id representing the thread in which the message was sent.
-  + `coordinates`: An object containing `latitude`, `longitude`, and `accuracy`.
-  + `type`: The string `"message"`, `"sticker"`, `"file"`, `"photo"`, `"animated_image"`, or `"event"` (if applicable, see below).
+  + `threadID`: The thread_id representing the thread in which the message was sent.
+  + `threadName`: The name of the receiver in a single person chat or the name of the group chat.
+  + `location`: 
+  + `messageID`: A string representing the message ID.
+  + `attachments`: An array of attachments to the message.
+  
+If `attachments` containts an object with type is `"sticker"`, the same object will contain the following fields:
 
-If `type` is `"sticker"` there will be a `sticker_id` and `sticker_url` field instead of `body`.
+  + `url`: Image url for the sticker.
+  + `stickerID`: An ID attributed to the sticker.
+  + `packID`: An ID attributed to the group to which the sticker belongs.
+  + `frameCount`:
+  + `frameRate`:
+  + `framesPerRow`:
+  + `framesPerCol`:
+  + `spriteURI`:
+  + `spriteURI2x`:
+  + `height`: Height of the sticker in pixels as a number.
+  + `width`: Width of the sticker in pixels as a number.
+  + `caption`: String representing caption associated with the sticker; if there is no caption, it will be an empty string.
+  + `description`: 
+
+If `attachments` containts an object with type is `"sticker"`, the same object will contain the following fields:
 
 If `type` is `"file"` there will be a `name` and a `file_url` instead of `body`.
 
@@ -552,7 +569,7 @@ api.listen(function callback(err, message) {
 ---------------------------------------
 
 <a name="changeArchivedStatus" />
-### api.changeArchivedStatus(threadI, callback)
+### api.changeArchivedStatus(threadOrThreads, callback)
 
 Takes a chat title (thread name) and returns matching results as a formatted threads array (ordered according to Facebook).
 
