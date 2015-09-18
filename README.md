@@ -135,7 +135,7 @@ If `type` is `message`, the object will contain the following fields:
   + `messageID`: A string representing the message ID.
   + `attachments`: An array of attachments to the message.
   
-If `attachments` containts an object with type is `"sticker"`, the same object will contain the following fields:
+If `attachments` contains an object with type is `"sticker"`, the same object will contain the following fields:
 
   + `url`: Image url for the sticker.
   + `stickerID`: An ID attributed to the sticker.
@@ -151,9 +151,69 @@ If `attachments` containts an object with type is `"sticker"`, the same object w
   + `caption`: String representing caption associated with the sticker; if there is no caption, it will be an empty string.
   + `description`: 
 
-If `attachments` containts an object with type is `"sticker"`, the same object will contain the following fields:
+If `attachments` contains an object with type is `"file"`, the same object will contain the following fields:
 
-If `type` is `"file"` there will be a `name` and a `file_url` instead of `body`.
+  + `name`: A string representing the attachment name.
+  + `url`: Attachment url.
+  + `ID`: String representing the attachment ID.
+  + `fileSize`: Size of attachment.
+  + `isMalicious`: Boolean specifying if the file is malicious or not.
+  + `mimeType`: 
+
+If `attachments` contains an object with type is `"photo"`, the same object will contain the following fields:
+
+  + `name`: A string name associated with the photo.
+  + `hiresUrl`: Attachment url.
+  + `thumbnailUrl`:
+  + `previewUrl`:
+  + `previewWidth`:
+  + `previewHeight`:
+  + `facebookUrl`:
+  + `ID`:
+  + `filename`:
+  + `mimeType`:
+  + `url`:
+  + `width`:
+  + `height`:
+
+If `attachments` contains an object with type is `"animated_image"`, the same object will contain the following fields:  
+
+  + `name`:
+  + `facebookUrl`:
+  + `previewUrl`:
+  + `previewWidth`:
+  + `previewHeight`:
+  + `thumbnailUrl`:
+  + `ID`:
+  + `filename`:
+  + `mimeType`:
+  + `width`:
+  + `height`:
+  + `url`:
+  + `rawGifImage`:
+  + `rawWebpImage`:
+  + `animatedGifUrl`:
+  + `animatedGifPreviewUrl`:
+  + `animatedWebpUrl`:
+  + `animatedWebpPreviewUrl`:
+
+If `attachments` contains an object with type is `"share"`, the same object will contain the following fields:  
+
+  + `description`:
+  + `ID`:
+  + `subattachments`:
+  + `animatedImageSize`:
+  + `width`:
+  + `height`:
+  + `image`:
+  + `playable`:
+  + `duration`:
+  + `source`:
+  + `title`:
+  + `facebookUrl`:
+  + `url`:
+
+If `type` is `"file"` there will be a `name` and a `file` instead of `body`.
 
 If `type` is `"photo"` there will be `name`,`hires_url`, `thumbnail_url`, and `preview_url` instead of `body`.
 
