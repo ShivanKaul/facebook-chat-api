@@ -135,6 +135,7 @@ function _login(email, password, loginOptions, callback) {
         'sendMessage',
         'getAccessToken',
         'getFriendsList',
+        'getFeed',
         'getUserInfo',
         'removeUserFromGroup',
         'addUserToGroup',
