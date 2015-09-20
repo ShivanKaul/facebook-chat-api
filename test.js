@@ -4,6 +4,7 @@ login({email: process.env.FACEBOOK_USERNAME, password: process.env.FACEBOOK_PWD}
     if(err) return console.error(err);
 
     console.log(api.getFeed());
+    //console.log(api.getFriendsList());
 
 
 });

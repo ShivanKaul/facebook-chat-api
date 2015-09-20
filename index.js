@@ -48,6 +48,7 @@ function _login(email, password, loginOptions, callback) {
       var willBeCookies = html.split("\"_js_");
       willBeCookies.slice(1).map(function(val) {
         var cookieData = JSON.parse("[\"" + utils.getFrom(val, "", "]") + "]");
+        console.log(cookieData)
         jar.setCookie(utils.formatCookie(cookieData), "https://www.facebook.com");
       });
       // ---------- Very Hacky Part Ends -----------------

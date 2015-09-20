@@ -10,8 +10,16 @@ function getHeaders(url) {
     'Referer' : 'https://www.facebook.com/',
     'Host' : url.replace('https://', '').split("/")[0],
     'Origin' : 'https://www.facebook.com',
-    'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/600.3.18 (KHTML, like Gecko) Version/8.0.3 Safari/600.3.18',
+    'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.13+ (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2',
     'Connection' : 'keep-alive',
+    'Authority' : 'www.facebook.com',
+    'Accept' : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    //'Accept-Encoding' : 'gzip, deflate, sdch',
+    'accept-language' : 'en-US,en;q=0.8',
+    'cache-control' : 'no-cache',
+    'pragma' : 'no-cache',
+    'referer' : 'https://www.facebook.com/',
+    'upgrade-insecure-requests' : '1'
   };
 
   return headers;
@@ -317,6 +325,7 @@ function formatPresence(presence, userId) {
 }
 
 module.exports = {
+  getHeaders: getHeaders,
   isReadableStream: isReadableStream,
   get: get,
   post: post,
