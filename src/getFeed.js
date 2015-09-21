@@ -36,10 +36,20 @@ module.exports = function (mergeWithDefaults, api, ctx) {
             // store the cookie locally
 
 
-            var maybeCookie = ctx.jar.getCookies("https://www.facebook.com");
-            console.log(maybeCookie);
+            //var maybeCookie = ctx.jar.getCookies("https://www.facebook.com");
+            //console.log(maybeCookie);
 
             html = html.split("<!--").join("").split("-->").join("");
+            var fs = require('fs');
+            fs.writeFile("/tmp/test", html, function(err) {
+                if(err) {
+                    return console.log(err);
+                }
+
+                console.log("The file was saved!");
+            });
+
+            //console.log(html);
             var ajaxToken = html.split("ajaxpipe_token\"")[1].split("\"", 2)[1];
             var ajaxPipe = 1; // why? ask Facebook
             console.log(ajaxToken);
@@ -81,6 +91,41 @@ module.exports = function (mergeWithDefaults, api, ctx) {
                 //__dyn:
             };
 
+
+            //var url = 'https://www.facebook.com';
+            //var html = "";
+            //request.get({url: url, jar: ctx.jar, headers: utils.getHeaders(url)}).on('data', function (data) {
+            //    // decompressed data as it is received
+            //    //console.log('decoded chunk: ' + data)
+            //    html += data;
+            //}).on('end', function () {
+            //
+            //
+            //    // store the cookie locally
+            //
+            //
+            //    //var maybeCookie = ctx.jar.getCookies("https://www.facebook.com");
+            //    //console.log(maybeCookie);
+            //
+            //    html = html.split("<!--").join("").split("-->").join("");
+            //    var ajaxToken = html.split("ajaxpipe_token\"")[1].split("\"", 2)[1];
+            //    var ajaxPipe = 1; // why? ask Facebook
+            //    console.log(ajaxToken);
+            //    // such hack much wow
+            //    var cursor = html.split("cursor=")[1].split("\"", 2)[1];
+            //    console.log(cursor);
+            //    var feed_stream_id = html.split("feed_stream_")[1].split("\"")[0];
+            //    console.log(feed_stream_id);
+            //    var pager_id = html.split("\"jsmods\":{\"elements\":[[", 2)[1].split("\"", 3)[1];
+            //    console.log(pager_id);
+            //    var section_id = html.split("topnews_main_stream_")[1].split("\"")[0];
+            //    console.log(section_id);
+            //})
+
+
+
+
+
             var answer = '';
             url = 'https://www.facebook.com/ajax/pagelet/generic.php/LitestandMoreStoriesPagelet'
 
@@ -98,7 +143,7 @@ module.exports = function (mergeWithDefaults, api, ctx) {
                 console.log(maybeCookie);
 
 
-                sendObject = {
+                sendObject = mergeWithDefaults({
                     //ajaxpipe: ajaxPipe,
                     //ajaxpipe_token: ajaxToken,
                     no_script_path: 1,
@@ -125,7 +170,7 @@ module.exports = function (mergeWithDefaults, api, ctx) {
                     __user: ctx.userId,
                     __a: 1
                     //__dyn:
-                };
+                });
                 answer = '';
                 request.get({
                     url: url,

@@ -6,16 +6,17 @@ var stream = require('stream');
 
 function getHeaders(url) {
   var headers = {
-    'Content-Type' : 'application/x-www-form-urlencoded',
-    'Referer' : 'https://www.facebook.com/',
+    'Content-Type' : 'text/javascript',
+    //'Referer' : 'https://www.facebook.com/',
     'Host' : url.replace('https://', '').split("/")[0],
-    'Origin' : 'https://www.facebook.com',
-    'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.13+ (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2',
+    //'Origin' : 'https://www.facebook.com',
+    'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.93 Safari/537.36',
     'Connection' : 'keep-alive',
     'Authority' : 'www.facebook.com',
     'Accept' : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
     //'Accept-Encoding' : 'gzip, deflate, sdch',
     'accept-language' : 'en-US,en;q=0.8',
+    'version': 'HTTP/1.1',
     'cache-control' : 'no-cache',
     'pragma' : 'no-cache',
     'referer' : 'https://www.facebook.com/',
